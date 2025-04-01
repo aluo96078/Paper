@@ -111,7 +111,15 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: paper-${{ fromJSON(steps.determine.outputs.result).pr }}
-          path: paper-server/build/libs/paper-paperclip-*-mojmap.jar
+          path: paper-server/build/libs/*.jar
+
+      - name: List Output Jars
+        if: always()
+        run: |
+          echo "Listing build/libs:"
+          ls -lh build/libs || echo "No files found"
+          echo "Listing paper-server/build/libs:"
+          ls -lh paper-server/build/libs || echo "No files found"
 
       - name: Upload All Jars
         if: always()
@@ -119,8 +127,8 @@ jobs:
         with:
           name: paper-artifacts
           path: |
-            build/libs/paper-*.jar
-            paper-server/build/libs/paper-paperclip-*.jar
+            build/libs/*.jar
+            paper-server/build/libs/*.jar
 
   event_file:
     name: "Event File"
